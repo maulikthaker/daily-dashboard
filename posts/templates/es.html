@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block title %}
+Maulik's Deals
+{% endblock %}
+
+{% block sidenav %}
+<li>
+    <a href="/posts/walkscore/"><i class="fa fa-dashboard fa-fw"></i>Map Walk Score</a>
+</li>
+<li style="background-color: lightgray;">
+    <a href="/posts/deals/"><i class="fa fa-table fa-fw"></i> Deals</a>
+</li>
+{% endblock %}
+
+
+{% block content %}
+
+{% endblock %}
+
+{% block pagecount %}
+    {{ pageCounter.count }}
+    <p>Last accessed : {{ pageCounter.timestamp }}</p>
+{% endblock %}

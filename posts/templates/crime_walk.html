@@ -1,0 +1,281 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block title %}
+Crime | Walk
+{% endblock %}
+
+{% block sidenav %}
+<li style="background-color: lightgray;">
+    <a href="/posts/walkscore/"><i class="fa fa-dashboard fa-fw"></i>Map Walk Score</a>
+</li>
+<li>
+    <a href="/posts/deals/"><i class="fa fa-table fa-fw"></i> Deals</a>
+</li>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+
+    {% if ESError %}
+    <div class="alert alert-danger" role="alert">
+        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+        <span class="sr-only">Error:</span>
+        Elastic Search must not be running, still showing data from JSON File
+    </div>
+    {% endif %}
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header">Crime Rate & Walk map </h1>
+        </div>
+        <!-- /.col-lg-12 -->
+    </div>
+    <!-- /.row -->
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="input-group">
+                <form class="form-inline" action="/posts/walkscore/" method="post">{% csrf_token %}
+                    <span class="input-group-btn" style="padding-bottom: 15px;">
+                    <input id="houseaddress" name="houseaddress" type="text" style="width: 800px;" class="form-control input-lg"
+                           {% if address %}
+                           placeholder="Showing : {{address}}"
+                           {% else %}
+                           placeholder="Your location (City, State )"
+                           {% endif %}>
+
+                           placeholder="Enter valid Address"
+                    id="houseaddress" >
+                <button type="submit" class="btn btn-success btn-lg"><span class="glyphicon glyphicon-search"></span></button>
+                        </span>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="col-lg-3 col-md-6">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <div class="row">
+                        <div class="col-xs-9">
+                            <div class="huge">Hot Homes in San Jose</div>
+
+                        </div>
+                    </div>
+                </div>
+
+
+                {% for alladd in top5.sanjose %}
+                <a href="/posts/walkscore/?houseaddress={{alladd}}">
+                    <div class="panel-footer">
+                        <span class="pull-left">{{alladd}}</span>
+                        <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                        <div class="clearfix"></div>
+                    </div>
+                </a>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="col-lg-3 col-md-6">
+            <div class="panel panel-green">
+                <div class="panel-heading">
+                    <div class="row">
+                        <div class="col-xs-9">
+                            <div class="huge">Hot Homes in Mountain View</div>
+
+                        </div>
+                    </div>
+                </div>
+
+
+                {% for alladd in top5.mountainview %}
+                <a href="/posts/walkscore/?houseaddress={{alladd}}">
+                    <div class="panel-footer">
+                        <span class="pull-left">{{alladd}}</span>
+                        <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                        <div class="clearfix"></div>
+                    </div>
+                </a>
+                {% endfor %}
+            </div>
+        </div>
+
+
+        <div class="col-lg-3 col-md-6">
+            <div class="panel panel-yellow">
+                <div class="panel-heading">
+                    <div class="row">
+                        <div class="col-xs-9">
+                            <div class="huge">Hot homes in Almaden</div>
+
+                        </div>
+                    </div>
+                </div>
+                {% for alladd in top5.almaden %}
+                <a href="/posts/walkscore/?houseaddress={{alladd}}">
+                    <div class="panel-footer">
+                        <span class="pull-left">{{alladd}}</span>
+                        <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                        <div class="clearfix"></div>
+                    </div>
+                </a>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="col-lg-3 col-md-6">
+            <div class="panel panel-red">
+                <div class="panel-heading">
+                    <div class="row">
+                        <div class="col-xs-9">
+                            <div class="huge">Hot homes in Campbell</div>
+
+                        </div>
+                    </div>
+                </div>
+                {% for alladd in top5.campbell %}
+                <a href="/posts/walkscore/?houseaddress={{alladd}}">
+                    <div class="panel-footer">
+                        <span class="pull-left">{{alladd}}</span>
+                        <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                        <div class="clearfix"></div>
+                    </div>
+                </a>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12">
+            &nbsp;
+        </div>
+    </div>
+
+    {% if origImage %}
+
+    <div class="row">
+        <div class="col-lg-2">
+            <div class="panel panel-gray">
+                <div class="panel-heading">
+                    <i class="fa fa-bar-chart-o fa-fw"></i> Map Legends
+                </div>
+                <!-- /.panel-heading -->
+                <div class="panel-body">
+
+                    <img src="{% static 'DONOTDELETE_MAP_LEGEND.png' %}" class="img-responsive">
+                </div>
+                <!-- /.panel -->
+            </div>
+            <!-- /.col-lg-8 -->
+        </div>
+
+        <div class="col-lg-10" style="padding-left: 0px;  padding-right: 0px;">
+            <div class="panel panel-gray">
+                <div class="panel-heading">
+                    <i class="fa fa-bar-chart-o fa-fw"></i> Showing crime for since {{since}} : <b>{{address }} </b>
+                </div>
+                <!-- /.panel-heading -->
+                <div class="panel-body">
+                    <img class="img-responsive" alt="&nbsp;&nbsp;&nbsp; Enter Query to show image"
+                         src="{% static '' %}{{origImage}} ">                    <!-- /.panel-body -->
+                </div>
+                <!-- /.panel -->
+            </div>
+            <!-- /.col-lg-8 -->
+        </div>
+        <!-- /.col-lg-4 -->
+    </div>
+
+    <div class="row">
+        <div class="col=lg-12">&nbsp;</div>
+    </div>
+
+    <div class="row">
+
+        <div class="panel panel-gray">
+            <div class="panel-heading">
+                <i class="fa fa-bar-chart-o fa-fw"></i> Showing happenings (Restaurant etc) near : {{ address }}
+            </div>
+            <!-- /.panel-heading -->
+            <div class="panel-body">
+
+                <div class="col-lg-2 vicinity">
+
+                    <div class="list-group">
+                        <a href="#" class="list-group-item">
+                            <i class="fa fa-comment fa-fw"></i> <b> Vicinity Type</b>
+                            <span class="pull-right text-muted small"><b>Count</b></span>
+                        </a>
+
+                        {% for business,count in vicinity.items %}
+                        <a class="list-group-item">
+                            <i class="fa fa-comment fa-fw"></i> {{business}}
+                            <span class="pull-right text-muted small"><em>{{count}}</em></span>
+                        </a>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="col-lg-8">
+
+                    {% if address %}
+                    {{ script|safe}}
+                    {{div|safe}}
+                    {% else %}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            &nbsp;
+        </div>
+    </div>
+    {% endif %}
+
+    <div class="row" style="background-color:silver">
+        <div class="col-lg-12">
+            <h3> Recent Searches .... </h3>
+            <table class="table table-striped"
+                   style="font-size:12px; font-family:Helvetica Neue,Helvetica,Arial,sans-serif;">
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Address Searched</th>
+                    <th>Ago</th>
+                    <th>Image File</th>
+                </tr>
+                </thead>
+                <tbody>
+
+
+                {% for address in recentAddresses %}
+                <tr class="success">
+                    <td>{{address.id }}</td>
+                    <td><a href="/posts/walkscore/?houseaddress={{ address.address}}">{{address.address}}</a></td>
+                    <td>{{address.timestamp|timesince }}</td>
+                    <td><a href='{% static address.imageFile %}'>{{address.imageFile}}</a></td>
+                </tr>
+                {% endfor %}
+
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+
+</div>
+
+
+{% endblock %}
+
+
+{% block pagecount %}
+    {{ pageCounter.count }}
+    <p>Last accessed : {{ pageCounter.timestamp }}</p>
+{% endblock %}

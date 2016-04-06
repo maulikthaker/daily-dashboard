@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+
+{% block title %}
+Maulik's Deals
+{% endblock %}
+
+{% block sidenav %}
+<li>
+    <a href="/posts/walkscore/"><i class="fa fa-dashboard fa-fw"></i>Map Walk Score</a>
+</li>
+<li style="background-color: lightgray;">
+    <a href="/posts/deals/"><i class="fa fa-table fa-fw"></i> Deals</a>
+</li>
+{% endblock %}
+
+
+{% block content %}
+<div class="container-fluid">
+
+    {% if ESError %}
+    <div class="alert alert-danger" role="alert">
+        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+        <span class="sr-only">Error:</span>
+        Elastic Search must not be running, still showing data from JSON File
+    </div>
+    {% endif %}
+
+    <div class="row">
+        <div class="col-lg-8"></div>
+        <div class="col=lg-3">
+            <form class="form-inline" action="/posts/deals/" method="post">{% csrf_token %}
+                <span class="label label-info"> Last refreshed : {{ lastRefreshed.timestamp |timesince}} ago </span>
+                <button type="submit" class="btn btn-default">Refresh Data</button>
+            </form>
+        </div>
+    </div>
+    <div class="row">&nbsp;</div>
+
+    <h1> Deal News</h1>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="row">
+                {% for image in dealnews %}
+                <div class="col-md-1">
+                    <img src="{{image.dealImage}}" alt="..." class="img-rounded img-responsive">
+                </div>
+                {% endfor %}
+            </div>
+            <div class="row">
+                {% for image in dealnews %}
+                <div class="col-md-1">
+                    <p style="font-size:12px">{{ image.dealText }}</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    <h1>Slick Deals</h1>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="row">
+                {% for image in slickdeals %}
+                <div class="col-md-1">
+                    <img src="{{image.dealImage}}" alt="..." class="img-rounded img-responsive">
+                </div>
+                {% endfor %}
+            </div>
+            <div class="row">
+                {% for image in slickdeals %}
+                <div class="col-md-1">
+                    <p style="font-size:12px">{{ image.dealText }}</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+
+</div>
+{% endblock %}
+
+{% block pagecount %}
+    {{ pageCounter.count }}
+    <p>Last accessed : {{ pageCounter.timestamp }}</p>
+{% endblock %}
