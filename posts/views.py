@@ -1,5 +1,6 @@
 import json
 import urllib2
+import requests
 from collections import Counter, OrderedDict
 from bokeh.embed import components
 from bokeh.models import (
@@ -10,11 +11,51 @@ from django.shortcuts import render
 from elasticsearch import Elasticsearch
 from geopy.geocoders import Nominatim
 from models import RecentAddresses as RA, Deals as D, PageCounter as PC
-import haystack
-
+from bs4 import BeautifulSoup
+import re
 ######################################################################
 #               ROUTE FUNCTIONS
 ######################################################################
+
+
+
+def tagbuilder(request):
+    '''
+    :param request:  input will be a URL
+    :return: output will be a object containing the number of tags inside the html
+    '''
+    context = {}
+    uniqTags = ["None Found"]
+    urltext = None
+    weburl = ""
+    error = None
+
+    if (request.POST or request.GET):
+        weburl = request.POST.get("weburl") if request.POST else request.GET['weburl']
+        print("Extracting Info from : ", weburl)
+        headers = {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 6.2; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/32.0.1667.0 Safari/537.36'}
+        try:
+            req = requests.get(weburl, headers=headers)
+            urltext = re.sub(r"(\n|\r)+", ' ', req.text)
+            soup = BeautifulSoup(req.text, 'html.parser')
+            uniqTags= dict(Counter([x.name for x in soup.find_all(True)]))
+            uniqTags = OrderedDict(reversed(sorted(uniqTags.items(), key=lambda t: t[1])))
+
+        except:
+            weburl = re.sub(r"(http\:\/\/)+", '', weburl)
+            error = weburl
+
+
+    context = {
+        "links"     : urltext,
+        "uniqTags"  : uniqTags,
+        "weburl"    : weburl,
+        "error"     : error
+    }
+    return render(request, "tagbuilder.html", context)
+
+
 
 
 def deals(request):

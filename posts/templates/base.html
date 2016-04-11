@@ -2,22 +2,25 @@
 <head>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"
           integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+
+
+
     <script src="https://code.jquery.com/jquery-2.2.1.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"
             integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS"
             crossorigin="anonymous"></script>
+
     {% load static %}
-    <link rel="stylesheet" href="https://cdn.pydata.org/bokeh/release/bokeh-0.11.1.min.css" type="text/css"/>
     <link rel="stylesheet" href="{% static 'main.css' %}" type="text/css"/>
 
-    <script type="text/javascript" src="https://cdn.pydata.org/bokeh/release/bokeh-0.11.1.min.js"></script>
-    <script type="text/javascript"> Bokeh.set_log_level("info"); </script>
+    {% block headerscripts %}{% endblock %}
+
     <title> {% block title %} Maulik's Dashboard {% endblock %} </title>
 </head>
 <body>
 
 <div id="wrapper">
-    <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+    <nav class="navbar navbar-default navbar-static-top " role="navigation" style="margin-bottom: 0">
         <div class="navbar-header">
             <a href="/" class="navbar-brand">Daily DashBoard</a>
         </div>
@@ -32,6 +35,10 @@
 
                 <li>
                     <a href="/posts/deals/"><i class="fa fa-table fa-fw"></i> Deal</a>
+
+                </li>
+                <li>
+                    <a href="/posts/tagbuilder/"><i class="fa fa-table fa-fw"></i>Source Code Tags</a>
 
                 </li>
 

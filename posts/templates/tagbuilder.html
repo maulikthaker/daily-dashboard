@@ -1,0 +1,153 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Tag Builder
+{% endblock %}
+
+{% block sidenav %}
+    <li>
+        <a href="/posts/walkscore/"><i class="fa fa-dashboard fa-fw"></i>Map Walk Score</a>
+    </li>
+    <li>
+        <a href="/posts/deals/"><i class="fa fa-table fa-fw"></i> Deals</a>
+    </li>
+    <li style="background-color: lightgray;" class=""active>
+        <a href="/posts/tagbuilder/"><i class="fa fa-dashboard fa-fw"></i>Source Code Tags</a>
+        <ul class="collapse in" aria-expanded="true">
+            {% for atag, number in uniqTags.items %}
+                <a href="javascript:blah('{{atag}}','{{number}}')">
+                <li>
+                        {{atag}}
+                    <!--<a href="javascript:blah('{{atag}}')">{{atag}}</a>-->
+                    <span style="background-color:#7F525D" class="badge pull-right">{{number}}</span>
+
+                </li>
+                    </a>
+            {% endfor %}
+        </ul>
+    </li>
+
+
+{% endblock %}
+
+
+{% block content %}
+
+            <div class="row">
+                <br>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="input-group">
+                        <form class="form-inline" action="/posts/tagbuilder/" method="post">{% csrf_token %}
+                                <span class="input-group-btn" style="padding-bottom: 15px;">
+                                <input id="weburl" name="weburl" type="text" style="width: 800px;" class="form-control input-lg"
+                                       {% if weburl %}
+                                       placeholder="Showing : {{weburl}}"
+                                       {% else %}
+                                       placeholder="Enter a valid URL ('http://www.google.com') "
+                                       {% endif %}>
+                            <button type="submit" class="btn btn-success btn-lg"><span class="glyphicon glyphicon-search"></span>
+                            </button>
+                                    </span>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+
+        {% if links %}
+                <br>
+                <div class="row">
+                    <div class="col-sm-8">
+                        <div class="alert-info" id="result" align="center"></div>
+                    </div>
+
+                    <div class="col-sm-3 pull-right">
+                        <ul class="nav nav-pills list-inline">
+                            <li class="active">
+                                <a class="ugly" onclick=prettify(this)>Click to Prettify !</a>
+                                <span id="display-success" class="label label-success">Success</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <hr>
+
+                <div id="tagtext">
+                    {{ links }}
+                </div>
+        {% endif %}
+
+        {% if error %}
+                <div class="row">
+                    <div class="alert alert-danger" role="alert"> <strong>Oh snap!</strong> No Results Found or Invalid URL</div>
+                </div>
+                <div class="row">
+                    <br>Try adding 'http' in the beginning<br>Did you mean : <a href='/posts/tagbuilder?weburl=http://{{error}}'>http://{{error}}</a>
+                </div>
+        {% endif %}
+
+
+{% endblock %}
+
+{% block pagecount %}
+        {{ pageCounter.count }}
+        <p>Last accessed : {{ pageCounter.timestamp }}</p>
+{% endblock %}
+
+
+
+
+{% block headerscripts %}
+        <script type="text/javascript">
+
+                    function prettify(that){
+
+                        if( that.className === 'ugly'){
+
+                             document.getElementById('tagtext').innerHTML =
+                             document.getElementById('tagtext').innerHTML.replace(/&gt;/g, '&gt;<br>');
+                             that.className = 'pretty';
+                             that.text = 'Click to Uglify !'
+                             $('#display-success').fadeIn().delay(1000).fadeOut();
+
+                        }else
+                        {
+                            <!--Make it ugly-->
+                            that.className = 'ugly';
+                            document.getElementById('tagtext').innerHTML =
+                            document.getElementById('tagtext').innerHTML.replace(/<br>/g, '');
+                            that.text = 'Click to Prettify !'
+                            $('#display-success').fadeIn().delay(1000).fadeOut();
+                        }
+
+                    }
+
+                    function blah(tag, number){
+                        var text = document.getElementById('tagtext');
+                        var innerHTML = text.innerHTML.replace(/\>\s+\</g,'\>\<');
+                        innerHTML = innerHTML.replace(/<span class="badge" id="removeme" style="background-color:gray">(.*?)<\/span>/g, '$1');
+                        var full = '(&lt;'+ tag + '[\\s]+(.*?)&gt;)|(&lt;'+ tag + '&gt;)';
+                        var replacewith = '<span class="badge" id="removeme" style="background-color:gray">$1</span>'
+                        innerHTML = innerHTML.replace( new RegExp( full, 'gi'), function($1){
+                            return '<span class="badge" id="removeme" style="background-color:gray">'+ $1 + '</span>'
+                        });
+                       text.innerHTML = innerHTML;
+                       $('#result').html("Displaying <strong> "+number+" </strong> Results of : <strong>" + tag+ "</strong>");
+
+                    }
+
+
+
+        </script>
+
+    <!-- Metis Menu Plugin JavaScript -->
+
+    <script src="http://blackrockdigital.github.io/startbootstrap-sb-admin-2/bower_components/metisMenu/dist/metisMenu.min.js"></script>
+    <script src="http://blackrockdigital.github.io/startbootstrap-sb-admin-2/dist/js/sb-admin-2.js"></script>
+    <script src="http://blackrockdigital.github.io/startbootstrap-sb-admin-2/bower_components/raphael/raphael-min.js"></script>
+
+
+{% endblock %}

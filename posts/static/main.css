@@ -103,6 +103,10 @@ body {
     border-bottom: 1px solid #e7e7e7;
 }
 
+.sidebar ul .collapse {
+    padding-left: 91px;
+}
+
 .sidebar ul li a.active {
     background-color: #eee;
 }
@@ -402,3 +406,14 @@ table.dataTable thead .sorting:after {
     margin: 0 0.8em 0 0;
     color: #99d4ff;
 }
+
+#display-success {
+    display:none;
+}
+
+
+#tagtext {
+    font-size: 14px;
+}
+
+

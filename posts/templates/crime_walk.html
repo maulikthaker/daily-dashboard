@@ -13,6 +13,10 @@ Crime | Walk
 <li>
     <a href="/posts/deals/"><i class="fa fa-table fa-fw"></i> Deals</a>
 </li>
+<li>
+    <a href="/posts/tagbuilder/"><i class="fa fa-table fa-fw"></i>Source Code Tags</a>
+</li>
+
 {% endblock %}
 
 {% block content %}
@@ -278,4 +282,13 @@ Crime | Walk
 {% block pagecount %}
     {{ pageCounter.count }}
     <p>Last accessed : {{ pageCounter.timestamp }}</p>
+{% endblock %}
+
+
+
+{% block headerscripts %}
+
+    <link rel="stylesheet" href="https://cdn.pydata.org/bokeh/release/bokeh-0.11.1.min.css" type="text/css"/>
+    <script type="text/javascript" src="https://cdn.pydata.org/bokeh/release/bokeh-0.11.1.min.js"></script>
+    <script type="text/javascript"> Bokeh.set_log_level("info"); </script>
 {% endblock %}
