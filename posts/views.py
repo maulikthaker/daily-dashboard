@@ -13,6 +13,8 @@ from geopy.geocoders import Nominatim
 from models import RecentAddresses as RA, Deals as D, PageCounter as PC
 from bs4 import BeautifulSoup
 import re
+
+
 ######################################################################
 #               ROUTE FUNCTIONS
 ######################################################################
@@ -24,7 +26,7 @@ def tagbuilder(request):
     :param request:  input will be a URL
     :return: output will be a object containing the number of tags inside the html
     '''
-    context = {}
+
     uniqTags = ["None Found"]
     urltext = None
     weburl = ""

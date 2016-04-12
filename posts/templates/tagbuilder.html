@@ -15,10 +15,10 @@
         <a href="/posts/tagbuilder/"><i class="fa fa-dashboard fa-fw"></i>Source Code Tags</a>
         <ul class="collapse in" aria-expanded="true">
             {% for atag, number in uniqTags.items %}
-                <a href="javascript:blah('{{atag}}','{{number}}')">
+                <a href="javascript:findTags('{{atag}}','{{number}}')">
                 <li>
                         {{atag}}
-                    <!--<a href="javascript:blah('{{atag}}')">{{atag}}</a>-->
+                    <!--<a href="javascript:findTags('{{atag}}')">{{atag}}</a>-->
                     <span style="background-color:#7F525D" class="badge pull-right">{{number}}</span>
 
                 </li>
@@ -125,7 +125,7 @@
 
                     }
 
-                    function blah(tag, number){
+                    function findTags(tag, number){
                         var text = document.getElementById('tagtext');
                         var innerHTML = text.innerHTML.replace(/\>\s+\</g,'\>\<');
                         innerHTML = innerHTML.replace(/<span class="badge" id="removeme" style="background-color:gray">(.*?)<\/span>/g, '$1');
