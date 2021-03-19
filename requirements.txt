@@ -14,7 +14,7 @@ elasticutils==0.10.3
 futures==3.0.5
 geopy==1.11.0
 haystack==0.36
-Jinja2==2.8
+Jinja2==2.11.3
 lxml==3.6.0
 MarkupSafe==0.23
 numpy==1.10.4
