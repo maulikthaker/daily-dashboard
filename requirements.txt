@@ -29,5 +29,5 @@ singledispatch==3.4.0.3
 six==1.10.0
 thrift==0.9.3
 tornado==4.3
-urllib3==1.14
+urllib3==1.26.5
 winappdbg==1.5
